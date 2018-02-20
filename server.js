@@ -11,5 +11,5 @@ const app = express();
 app.use('/blog-posts', blogPostRouter)
 
 app.listen(8080, () => {
-	console.log(`your app is listening on port 8080`)
+	console.log(`wuzzup your app is listening on port 8080 - ${Date()}`)
 })

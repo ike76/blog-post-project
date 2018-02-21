@@ -6,6 +6,7 @@ const jsonParser = bodyParser.json();
 
 const { BlogPosts } = require('./models')
 
+
 BlogPosts.create('hey wuzzup', 'hi i was wondering how its going everyone.  ok bye', 'jimmy');
 BlogPosts.create('boo', 'im grumpy and everything is stupid', 'grandpa');
 
@@ -23,7 +24,7 @@ router.post('/', jsonParser, (req, res) => {
 		} 
 	}
 	const {title, content, author} = req.body;
-	const post = BlogPosts.create({title, content, author});
+	const post = BlogPosts.create(title, content, author);
 	res.status(201).json(post)
 })
 router.put('/:id', jsonParser, (req, res)=>{

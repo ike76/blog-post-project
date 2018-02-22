@@ -2,7 +2,7 @@ const express = require('express');
 const morgan = require('morgan')
 const blogPostRouter = require('./routes');
 const app = express();
-const {PORT, DATABASE_URL} = require('./config');
+const {PORT, DATABASE_URL, TEST_DATABASE_URL} = require('./config');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 

@@ -4,11 +4,11 @@ chai.use(chaiHttp);
 const should = chai.should()
 const expect = chai.expect
 const {app, runServer, closeServer} = require('../server');
-
+const {TEST_DATABASE_URL} = require('../config')
 
 describe('Blog Posts', function(){
 	before(()=>{
-		return runServer()
+		return runServer(TEST_DATABASE_URL)
 	})
 	after(() => {
 		return closeServer()
@@ -30,7 +30,7 @@ describe('Blog Posts', function(){
 	})
 
 	it('should POST a new post', function(){
-		const newPost = {title: 'good morning', content: 'lovely day were having', author: 'mr. Rogers'}
+		const newPost = {title: 'good morning', content: 'lovely day were having', author: {firstName: "mister", lastName: 'rogers'}}
 		return chai.request(app)
 			.post('/blog-posts')
 			.send(newPost)
@@ -39,17 +39,12 @@ describe('Blog Posts', function(){
 				res.should.be.json;
 				res.should.be.an('object');
 				res.body.should.deep.equal(Object.assign(newPost, {id: res.body.id, publishDate: res.body.publishDate}))
-				newPost.id = res.body.id;
-				return chai.request(app)
-					.get('/blog-posts')
-			})
-			.then(function(res){
-				res.body[0].id.should.equal(newPost.id) // it has to be the first one.
+
 			})
 	})
 
 	it('should change post with PUT', function(){
-		const updatedPost = {title: 'ugh', content: 'this weather sucks', author: 'mr. Rogers'}
+		const updatedPost = {title: 'ugh', content: 'this weather sucks'}
 		return chai.request(app)
 			.get('/blog-posts')
 			.then(function(res){
@@ -60,7 +55,7 @@ describe('Blog Posts', function(){
 					.send(updatedPost)
 			})
 			.then(function(res){
-				res.should.have.status(201);
+				res.should.have.status(200);
 				res.body.should.deep.equal(updatedPost)
 			})
 	})
